@@ -1,0 +1,17 @@
+rescript = 1
+g_finger := /Users/pillsang/Desktop/Private Projects/react-rescript-todo-app/node_modules/@rescript/react/lib/ocaml/install.stamp
+rule astj
+  command = '/Users/pillsang/Desktop/Private Projects/react-rescript-todo-app/node_modules/rescript/darwinarm64/bsc.exe'  -bs-v 10.1.3 -bs-jsx 4 -bs-jsx-mode classic  -absname -bs-ast -o $out $i
+o src/App.ast : astj ../../src/App.res
+rule deps
+  command = '/Users/pillsang/Desktop/Private Projects/react-rescript-todo-app/node_modules/rescript/darwinarm64/bsb_helper.exe' -hash 6f75cb7e4dad48fa79dd6e0545bff799 $in
+  restat = 1
+o src/App.d : deps src/App.ast
+rule mij
+  command = '/Users/pillsang/Desktop/Private Projects/react-rescript-todo-app/node_modules/rescript/darwinarm64/bsc.exe' -I src/styles -I src -I '/Users/pillsang/Desktop/Private Projects/react-rescript-todo-app/node_modules/@rescript/react/lib/ocaml'   -bs-package-name bsconfig.json -bs-package-output es6:$in_d:.bs.js -bs-v $g_finger $i
+  dyndep = 1
+  restat = 1
+o src/App.cmj src/App.cmi ../../src/App.bs.js : mij src/App.ast
+o src/index.ast : astj ../../src/index.res
+o src/index.d : deps src/index.ast
+o src/index.cmj src/index.cmi ../../src/index.bs.js : mij src/index.ast
